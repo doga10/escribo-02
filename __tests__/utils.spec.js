@@ -1,4 +1,4 @@
-const { random, randomValues, sum, appendRound, playerValue } = require('../utils/main')
+const { random, randomValues, sum, appendRound, playerValue, readJSON } = require('../utils/main')
 
 expect.extend({
   toBeWithinRange(received, floor, ceiling) {
@@ -60,4 +60,8 @@ test('should return the sum of the value of the informed player', () => {
   appendRound('player01', 50)
   expect(playerValue('player01')).toEqual(70)
   expect(playerValue('player02')).toEqual(0)
+})
+
+test('should read the data.json file from the data directory', () => {
+  expect(readJSON()).toBeTruthy()
 })

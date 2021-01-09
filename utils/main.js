@@ -1,3 +1,9 @@
+'use strict'
+const { join } = require('path')
+const fs = require('fs')
+
+const db = join(__dirname, '..', 'data', 'data.json')
+
 const players = {
   'player01': [],
   'player02': []
@@ -17,6 +23,16 @@ const appendRound = (name, value) => {
 const playerValue = (name) => {
   return sum(players[name])
 }
+
+const readJSON = () => {
+  const data = fs.existsSync(db) ? fs.readFileSync(db) : []
+  try {
+    return JSON.parse(data)
+  } catch (e) {
+    return []
+  }
+}
+
 // const dice = () => {
 //   const result = randomValues()
 //   if (result[0] === result[1]) {
@@ -26,4 +42,4 @@ const playerValue = (name) => {
 //   return sum(result)
 // }
 
-module.exports = { random, randomValues, sum, appendRound, playerValue }
+module.exports = { random, randomValues, sum, appendRound, playerValue, readJSON }
