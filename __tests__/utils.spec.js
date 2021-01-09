@@ -1,4 +1,4 @@
-const { random, randomValues, sum } = require('../utils/main')
+const { random, randomValues, sum, appendRound } = require('../utils/main')
 
 expect.extend({
   toBeWithinRange(received, floor, ceiling) {
@@ -33,4 +33,15 @@ test('should return an array of integers with 2 positions, between 1 to 6', () =
 test('should return the sum of the array', () => {
   expect(sum([1, 2])).toBe(3)
   expect(sum([])).toBe(0)
+})
+
+test('should return the sum of the array', () => {
+  expect(appendRound('player01', 10)).toEqual({
+    'player01': [10],
+    'player02': []
+  })
+  expect(appendRound('player02', 20)).toEqual({
+    'player01': [10],
+    'player02': [20]
+  })
 })
