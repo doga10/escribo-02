@@ -14,6 +14,9 @@ const appendRound = (name, value) => {
   return players
 }
 
+const playerValue = (name) => {
+  return sum(players[name])
+}
 // const dice = () => {
 //   const result = randomValues()
 //   if (result[0] === result[1]) {
@@ -23,4 +26,4 @@ const appendRound = (name, value) => {
 //   return sum(result)
 // }
 
-module.exports = { random, randomValues, sum, appendRound }
+module.exports = { random, randomValues, sum, appendRound, playerValue }
