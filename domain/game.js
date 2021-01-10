@@ -1,4 +1,5 @@
 const chalk = require('chalk')
+const logger = require('../utils/logger')
 
 class CobrasEscadas {
 
@@ -16,16 +17,16 @@ class CobrasEscadas {
     const [ ladderIndex ] = json.ladder.filter(obj => Object.keys(obj)[0] === playerPosition.toString())
     const [ snakeIndex ] = json.snake.filter(obj => Object.keys(obj)[0] === playerPosition.toString())
     if (ladderIndex) {
-      console.log(`${chalk.red(`Player ${name} skips ${Math.abs(playerPosition - Object.values(ladderIndex)[0])} houses`)}`)
+      logger.consoleRed(name, 'skips', Math.abs(playerPosition - Object.values(ladderIndex)[0]))
       this.player.appendRound(name, Math.abs(playerPosition - Object.values(ladderIndex)[0]))
     }
     if (snakeIndex) {
-      console.log(`${chalk.red(`Player ${name} back ${-Math.abs(playerPosition - Object.values(snakeIndex)[0])} houses`)}`)
+      logger.consoleRed(name, 'back', -Math.abs(playerPosition - Object.values(snakeIndex)[0]))
       this.player.appendRound(name, -Math.abs(playerPosition - Object.values(snakeIndex)[0]))
     }
   
     const position = this.player.playerValue(name)
-    console.log(`${chalk.green(`Player ${name} is in position: ${position}`)}`)
+    logger.consoleGreen(name, position)
     
     return position
   }
@@ -34,7 +35,7 @@ class CobrasEscadas {
     const result = this.calculator.randomValues()
     const playerPosition = this.player.playerValue(name)
     if (result[0] === result[1] && playerPosition !== 100) {
-      console.log(`${chalk.redBright(`Player ${name} rotated the data again: ${result[0]} ${result[1]}`)}`)
+      logger.consoleRedBright(name, result)
       this.dice(name)
     }
   

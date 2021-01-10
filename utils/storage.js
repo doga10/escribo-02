@@ -7,7 +7,7 @@ class Storage {
 	}
 
 	readJSON () {
-		const data = fs.existsSync(this.db) ? fs.readFileSync(this.db) : []
+		const data = fs.readFileSync(this.db)
     return JSON.parse(data)
 	}
 }
