@@ -7,6 +7,7 @@ Implemente a parte lógica do jogo indiano "Cobras e Escadas"
 
 - Run command `npm i`
 - Run command `npm run test`
+- Run command `npm run test:ci`. With that we will see the coverage in the tests
 
 > #### Start Project
 
