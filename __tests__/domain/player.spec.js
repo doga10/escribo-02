@@ -1,4 +1,4 @@
-const calculator = require('../../utils/calculator')
+const calculator = require('../../support/calculator')
 const Player = require('../../domain/player')
 
 const player = new Player(calculator)

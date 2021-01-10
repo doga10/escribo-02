@@ -1,5 +1,5 @@
 const chalk = require('chalk')
-const logger = require('../utils/logger')
+const logger = require('../support/logger')
 
 class CobrasEscadas {
 

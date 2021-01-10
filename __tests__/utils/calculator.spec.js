@@ -1,4 +1,4 @@
-const calculator = require('../../utils/calculator')
+const calculator = require('../../support/calculator')
 
 expect.extend({
   toBeWithinRange(received, floor, ceiling) {
