@@ -42,11 +42,11 @@ const gameRules = (name, value) => {
   const [ ladderIndex ] = json.ladder.filter(obj => Object.keys(obj)[0] === playerPosition.toString())
   const [ snakeIndex ] = json.snake.filter(obj => Object.keys(obj)[0] === playerPosition.toString())
   if (ladderIndex) {
-    console.log(name, "escada", Math.abs(playerPosition - Object.values(ladderIndex)[0]))
+    console.log(`${chalk.red(`Player ${name} skips ${Math.abs(playerPosition - Object.values(ladderIndex)[0])} houses`)}`)
     appendRound(name, Math.abs(playerPosition - Object.values(ladderIndex)[0]))
   }
   if (snakeIndex) {
-    console.log(name, "cobra", -Math.abs(playerPosition - Object.values(snakeIndex)[0]))
+    console.log(`${chalk.red(`Player ${name} back ${-Math.abs(playerPosition - Object.values(snakeIndex)[0])} houses`)}`)
     appendRound(name, -Math.abs(playerPosition - Object.values(snakeIndex)[0]))
   }
 
@@ -59,12 +59,11 @@ const gameRules = (name, value) => {
 const dice = (name, position) => {
   const result = randomValues()
   if (result[0] === result[1] && position !== 100) {
-    console.log(name, result[0], result[1], sum(result))
+    console.log(`${chalk.redBright(`Player ${name} rotated the data again: ${result[0]} ${result[1]}`)}`)
     dice(name, position)
   }
 
   const resolve = sum(result)
-  console.log(name, result, resolve)
   return gameRules(name, resolve)
 }
 
@@ -86,7 +85,6 @@ const jogar = () => {
   let isCondition = true
   while (isCondition) {
     const response = condition()
-    console.log(response)
     if ('string' === typeof response) {
       isCondition = false
       break
