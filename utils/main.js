@@ -73,7 +73,7 @@ const condition = () => {
   let position = dice(isPlayer ? 'player01' : 'player02')
   isPlayer = !isPlayer
   if (position === 100) {
-    return `Player ${isPlayer ? 'player01' : 'player02'} winner!`
+    return `Player ${!isPlayer ? 'player01' : 'player02'} winner!`
   } else if (position > 100) {
     appendRound(!isPlayer ? 'player01' : 'player02', -((position - 100) * 2))
     position = playerValue(!isPlayer ? 'player01' : 'player02') 
