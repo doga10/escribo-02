@@ -1,6 +1,6 @@
 const chalk = require('chalk')
 
-class Game {
+class CobrasEscadas {
 
   constructor(player, storage, calculator) {
     this.player = player
@@ -30,11 +30,12 @@ class Game {
     return position
   }
 
-  dice(name, position) {
+  dice(name) {
     const result = this.calculator.randomValues()
-    if (result[0] === result[1] && position !== 100) {
+    const playerPosition = this.player.playerValue(name)
+    if (result[0] === result[1] && playerPosition !== 100) {
       console.log(`${chalk.redBright(`Player ${name} rotated the data again: ${result[0]} ${result[1]}`)}`)
-      this.dice(name, position)
+      this.dice(name)
     }
   
     const resolve = this.calculator.sum(result)
@@ -67,4 +68,4 @@ class Game {
   }
 }
 
-module.exports = Game
+module.exports = CobrasEscadas
