@@ -4,9 +4,11 @@ const chalk = require('chalk')
 
 const db = join(__dirname, '..', 'data', 'data.json')
 
-let players = {
-  'player01': [],
-  'player02': []
+const MAX_POSITION = 112
+
+const players = {
+  player01: [],
+  player02: []
 }
 
 const random = () => (Math.floor(Math.random() * (6 - 1 + 1)) + 1)
@@ -16,7 +18,7 @@ const randomValues = () => ([random(), random()])
 const sum = (array) => (array.reduce((acc, cur) => ( acc += cur ), 0))
 
 const appendRound = (name, value) => {
-  players[name].push(value)
+  players[name].push(value);  
   return players
 }
 
@@ -40,9 +42,11 @@ const gameRules = (name, value) => {
   const [ ladderIndex ] = json.ladder.filter(obj => Object.keys(obj)[0] === playerPosition.toString())
   const [ snakeIndex ] = json.snake.filter(obj => Object.keys(obj)[0] === playerPosition.toString())
   if (ladderIndex) {
+    console.log(name, "escada", Math.abs(playerPosition - Object.values(ladderIndex)[0]))
     appendRound(name, Math.abs(playerPosition - Object.values(ladderIndex)[0]))
   }
   if (snakeIndex) {
+    console.log(name, "cobra", -Math.abs(playerPosition - Object.values(snakeIndex)[0]))
     appendRound(name, -Math.abs(playerPosition - Object.values(snakeIndex)[0]))
   }
 
@@ -52,26 +56,42 @@ const gameRules = (name, value) => {
   return position
 }
 
-const dice = (name) => {
+const dice = (name, position) => {
   const result = randomValues()
-  if (result[0] === result[1]) {
-    dice()
-    console.log(`${chalk.blue(`Player ${name} can play again! dice01: ${result[0]}, dice02: ${result[1]}`)}`)
+  if (result[0] === result[1] && position !== 100) {
+    console.log(name, result[0], result[1], sum(result))
+    dice(name, position)
   }
 
   const resolve = sum(result)
+  console.log(name, result, resolve)
   return gameRules(name, resolve)
 }
 
-// dice('player01')
-// dice('player02')
-// dice('player01')
-// dice('player02')
-// dice('player01')
-// dice('player02')
-// dice('player01')
-// dice('player02')
-// dice('player01')
-// dice('player02')
+let isPlayer = true
+const condition = () => {
+  let position = dice(isPlayer ? 'player01' : 'player02')
+  isPlayer = !isPlayer
+  if (position === 100) {
+    return `Player ${isPlayer ? 'player01' : 'player02'} winner!`
+  } else if (position > 100) {
+    appendRound(!isPlayer ? 'player01' : 'player02', -((position - 100) * 2))
+    position = playerValue(!isPlayer ? 'player01' : 'player02') 
+    return position
+  }
+  return position
+}
 
-module.exports = { random, randomValues, sum, appendRound, playerValue, readJSON, gameRules, dice }
+const jogar = () => {
+  let isCondition = true
+  while (isCondition) {
+    const response = condition()
+    console.log(response)
+    if ('string' === typeof response) {
+      isCondition = false
+      break
+    }
+  }
+}
+
+module.exports = { random, randomValues, sum, appendRound, playerValue, readJSON, gameRules, dice, jogar }
