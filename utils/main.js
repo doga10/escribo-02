@@ -1,10 +1,10 @@
-'use strict'
 const { join } = require('path')
 const fs = require('fs')
+const chalk = require('chalk')
 
 const db = join(__dirname, '..', 'data', 'data.json')
 
-const players = {
+let players = {
   'player01': [],
   'player02': []
 }
@@ -33,13 +33,45 @@ const readJSON = () => {
   }
 }
 
-// const dice = () => {
-//   const result = randomValues()
-//   if (result[0] === result[1]) {
-//     dice()
-//   }
+const gameRules = (name, value) => {
+  appendRound(name, value)
+  const playerPosition = playerValue(name)
+  const json = readJSON()
+  const [ ladderIndex ] = json.ladder.filter(obj => Object.keys(obj)[0] === playerPosition.toString())
+  const [ snakeIndex ] = json.snake.filter(obj => Object.keys(obj)[0] === playerPosition.toString())
+  if (ladderIndex) {
+    appendRound(name, Math.abs(playerPosition - Object.values(ladderIndex)[0]))
+  }
+  if (snakeIndex) {
+    appendRound(name, -Math.abs(playerPosition - Object.values(snakeIndex)[0]))
+  }
 
-//   return sum(result)
-// }
+  const position = playerValue(name)
+  console.log(`${chalk.green(`Player ${name} is in position: ${position}`)}`)
+  
+  return position
+}
 
-module.exports = { random, randomValues, sum, appendRound, playerValue, readJSON }
+const dice = (name) => {
+  const result = randomValues()
+  if (result[0] === result[1]) {
+    dice()
+    console.log(`${chalk.blue(`Player ${name} can play again! dice01: ${result[0]}, dice02: ${result[1]}`)}`)
+  }
+
+  const resolve = sum(result)
+  return gameRules(name, resolve)
+}
+
+// dice('player01')
+// dice('player02')
+// dice('player01')
+// dice('player02')
+// dice('player01')
+// dice('player02')
+// dice('player01')
+// dice('player02')
+// dice('player01')
+// dice('player02')
+
+module.exports = { random, randomValues, sum, appendRound, playerValue, readJSON, gameRules, dice }

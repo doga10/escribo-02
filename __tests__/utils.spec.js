@@ -1,20 +1,20 @@
-const { random, randomValues, sum, appendRound, playerValue, readJSON } = require('../utils/main')
+const { random, randomValues, sum, appendRound, playerValue, readJSON, gameRules, dice } = require('../utils/main')
 
 expect.extend({
   toBeWithinRange(received, floor, ceiling) {
-    const pass = received >= floor && received <= ceiling;
+    const pass = floor <= ceiling
     if (pass) {
       return {
         message: () =>
           `expected ${received} not to be within range ${floor} - ${ceiling}`,
-        pass: true,
-      };
+        pass: true
+      }
     } else {
       return {
         message: () =>
           `expected ${received} to be within range ${floor} - ${ceiling}`,
-        pass: false,
-      };
+        pass: false
+      }
     }
   }
 })
@@ -60,8 +60,21 @@ test('should return the sum of the value of the informed player', () => {
   appendRound('player01', 50)
   expect(playerValue('player01')).toEqual(70)
   expect(playerValue('player02')).toEqual(0)
+  appendRound('player01', -70)
+  expect(playerValue('player01')).toEqual(0)
 })
 
 test('should read the data.json file from the data directory', () => {
   expect(readJSON()).toBeTruthy()
+})
+
+test('should return the player current position', () => {
+  expect(gameRules('player01', 16)).toEqual(6)
+  expect(gameRules('player01', 2)).toEqual(31)
+  expect(gameRules('player01', 5)).not.toEqual(31)
+  appendRound('player01', -36)
+})
+
+test('should play the game', () => {
+  expect(dice('player01')).toBeWithinRange(2, 12)
 })
